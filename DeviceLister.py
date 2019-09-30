@@ -26,7 +26,7 @@ import requests
 import json
 
 tool_name = "BELL XMC NBI DeviceLister.py"
-tool_version = "1.0.0"
+tool_version = "1.0.1"
 http_user_agent = tool_name + "/" + tool_version
 
 parser = argparse.ArgumentParser(description = 'Fetch all known devices from XMC.')
@@ -36,15 +36,19 @@ parser.add_argument('--username', help = 'Username for HTTP auth', default = 'ad
 parser.add_argument('--password', help = 'Password for HTTP auth', default = '')
 args = parser.parse_args()
 
-api_url = 'https://' + args.host + ':8443/nbi/graphql'
-http_headers = {
-	'User-Agent': http_user_agent
-}
-http_params = {
-	'query': 'query { network { devices { up ip sysName deviceData { vendor family subFamily } } } }'
-}
-r = requests.get(api_url, headers = http_headers, auth = (args.username, args.password), params = http_params, timeout = args.httptimeout)
-result = r.json()
+try:
+	api_url = 'https://' + args.host + ':8443/nbi/graphql'
+	http_headers = {
+		'User-Agent': http_user_agent
+	}
+	http_params = {
+		'query': 'query { network { devices { up ip sysName deviceData { vendor family subFamily } } } }'
+	}
+	r = requests.get(api_url, headers = http_headers, auth = (args.username, args.password), params = http_params, timeout = args.httptimeout)
+	result = r.json()
+except:
+	print('Failed to fetch data.')
+	exit()
 
 for d in result['data']['network']['devices']:
 	if d['deviceData']['subFamily'] != '':
