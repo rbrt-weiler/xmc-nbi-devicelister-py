@@ -26,12 +26,13 @@ import requests
 import json
 
 tool_name = "BELL XMC NBI DeviceLister.py"
-tool_version = "1.0.1"
+tool_version = "1.0.2"
 http_user_agent = tool_name + "/" + tool_version
 
 parser = argparse.ArgumentParser(description = 'Fetch all known devices from XMC.')
 parser.add_argument('--host', help = 'XMC Hostname / IP', default = 'localhost')
 parser.add_argument('--httptimeout', help = 'Timeout for HTTP(S) connections', default = 5)
+parser.add_argument('--insecurehttps', help = 'Do not validate HTTPS certificates', default = False, action = 'store_true')
 parser.add_argument('--username', help = 'Username for HTTP auth', default = 'admin')
 parser.add_argument('--password', help = 'Password for HTTP auth', default = '')
 args = parser.parse_args()
@@ -44,7 +45,7 @@ try:
 	http_params = {
 		'query': 'query { network { devices { up ip sysName deviceData { vendor family subFamily } } } }'
 	}
-	r = requests.get(api_url, headers = http_headers, auth = (args.username, args.password), params = http_params, timeout = args.httptimeout)
+	r = requests.get(api_url, headers = http_headers, auth = (args.username, args.password), params = http_params, timeout = args.httptimeout, verify = not args.insecurehttps)
 	result = r.json()
 except:
 	print('Failed to fetch data.')
