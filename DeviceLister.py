@@ -26,7 +26,7 @@ import requests
 import json
 
 tool_name = "BELL XMC NBI DeviceLister.py"
-tool_version = "1.0.2"
+tool_version = "1.0.3"
 http_user_agent = tool_name + "/" + tool_version
 
 parser = argparse.ArgumentParser(description = 'Fetch all known devices from XMC.')
@@ -43,7 +43,7 @@ try:
 		'User-Agent': http_user_agent
 	}
 	http_params = {
-		'query': 'query { network { devices { up ip sysName deviceData { vendor family subFamily } } } }'
+		'query': 'query { network { devices { up ip sysName nickName deviceData { vendor family subFamily } } } }'
 	}
 	r = requests.get(api_url, headers = http_headers, auth = (args.username, args.password), params = http_params, timeout = args.httptimeout, verify = not args.insecurehttps)
 	result = r.json()
@@ -52,11 +52,13 @@ except:
 	exit()
 
 for d in result['data']['network']['devices']:
+	family = d['deviceData']['family']
+	devName = d['sysName']
 	if d['deviceData']['subFamily'] != '':
-		family = d['deviceData']['family'] + ' ' + d['deviceData']['subFamily']
-	else:
-		family = d['deviceData']['family']
+		family = family + ' ' + d['deviceData']['subFamily']
+	if devName == "" and d['nickName'] != "":
+		devName = d['nickName']
 	if d['up']:
-		print('+ %s (%s %s "%s") is up.' % (d['ip'], d['deviceData']['vendor'], family, d['sysName']))
+		print('+ %s (%s %s "%s") is up.' % (d['ip'], d['deviceData']['vendor'], family, devName))
 	else:
-		print('- %s (%s %s "%s") is down.' % (d['ip'], d['deviceData']['vendor'], family, d['sysName']))
+		print('- %s (%s %s "%s") is down.' % (d['ip'], d['deviceData']['vendor'], family, devName))
