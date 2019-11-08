@@ -25,8 +25,10 @@ import argparse
 import requests
 import json
 
+from urllib3.exceptions import InsecureRequestWarning
+
 tool_name = "BELL XMC NBI DeviceLister.py"
-tool_version = "1.0.3"
+tool_version = "1.0.4"
 http_user_agent = tool_name + "/" + tool_version
 
 parser = argparse.ArgumentParser(description = 'Fetch all known devices from XMC.')
@@ -38,6 +40,7 @@ parser.add_argument('--password', help = 'Password for HTTP auth', default = '')
 args = parser.parse_args()
 
 try:
+	requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 	api_url = 'https://' + args.host + ':8443/nbi/graphql'
 	http_headers = {
 		'User-Agent': http_user_agent
