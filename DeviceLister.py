@@ -27,9 +27,13 @@ import json
 
 from urllib3.exceptions import InsecureRequestWarning
 
-tool_name = "BELL XMC NBI DeviceLister.py"
-tool_version = "1.0.4"
-http_user_agent = tool_name + "/" + tool_version
+TOOL_NAME = "BELL XMC NBI DeviceLister.py"
+TOOL_VERSION = "1.0.5"
+HTTP_USER_AGENT = TOOL_NAME + "/" + TOOL_VERSION
+ERR_SUCCESS = 0
+ERR_GENERIC = 255
+
+requests.packages.urllib3.disable_warnings(category = InsecureRequestWarning)
 
 parser = argparse.ArgumentParser(description = 'Fetch all known devices from XMC.')
 parser.add_argument('--host', help = 'XMC Hostname / IP', default = 'localhost')
@@ -39,20 +43,23 @@ parser.add_argument('--username', help = 'Username for HTTP auth', default = 'ad
 parser.add_argument('--password', help = 'Password for HTTP auth', default = '')
 args = parser.parse_args()
 
+api_url = 'https://' + args.host + ':8443/nbi/graphql'
+http_headers = {
+	'User-Agent': HTTP_USER_AGENT
+}
+http_params = {
+	'query': 'query { network { devices { up ip sysName nickName deviceData { vendor family subFamily } } } }'
+}
+
 try:
-	requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
-	api_url = 'https://' + args.host + ':8443/nbi/graphql'
-	http_headers = {
-		'User-Agent': http_user_agent
-	}
-	http_params = {
-		'query': 'query { network { devices { up ip sysName nickName deviceData { vendor family subFamily } } } }'
-	}
 	r = requests.get(api_url, headers = http_headers, auth = (args.username, args.password), params = http_params, timeout = args.httptimeout, verify = not args.insecurehttps)
+	if r.status_code != requests.codes.ok:
+		r.raise_for_status()
 	result = r.json()
-except:
-	print('Failed to fetch data.')
-	exit()
+except BaseException as e:
+	print('Failed to fetch data from XMC:')
+	print(e)
+	exit(ERR_GENERIC)
 
 for d in result['data']['network']['devices']:
 	family = d['deviceData']['family']
@@ -65,3 +72,5 @@ for d in result['data']['network']['devices']:
 		print('+ %s (%s %s "%s") is up.' % (d['ip'], d['deviceData']['vendor'], family, devName))
 	else:
 		print('- %s (%s %s "%s") is down.' % (d['ip'], d['deviceData']['vendor'], family, devName))
+
+exit(ERR_SUCCESS)
