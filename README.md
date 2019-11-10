@@ -10,7 +10,7 @@ DeviceLister.py requires the Python module `requests` to be installed. PIP may b
 
 ## Usage
 
-Tested with Python 3.7.4 and 3.8.0.
+Tested with Python 3.7.{3,4} and 3.8.0.
 
 `DeviceLister.py -h`:
 
