@@ -28,7 +28,7 @@ import json
 from urllib3.exceptions import InsecureRequestWarning
 
 TOOL_NAME = "BELL XMC NBI DeviceLister.py"
-TOOL_VERSION = "1.0.5"
+TOOL_VERSION = "1.1.0"
 HTTP_USER_AGENT = TOOL_NAME + "/" + TOOL_VERSION
 ERR_SUCCESS = 0
 ERR_GENERIC = 255
@@ -41,7 +41,12 @@ parser.add_argument('--httptimeout', help = 'Timeout for HTTP(S) connections', d
 parser.add_argument('--insecurehttps', help = 'Do not validate HTTPS certificates', default = False, action = 'store_true')
 parser.add_argument('--username', help = 'Username for HTTP auth', default = 'admin')
 parser.add_argument('--password', help = 'Password for HTTP auth', default = '')
+parser.add_argument('--version', help = 'Print version information and exit', default = False, action = 'store_true')
 args = parser.parse_args()
+
+if args.version:
+	print(HTTP_USER_AGENT)
+	exit(ERR_SUCCESS)
 
 api_url = 'https://' + args.host + ':8443/nbi/graphql'
 http_headers = {
