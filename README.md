@@ -38,6 +38,7 @@ Tested with Python 3.7.{3,4} and 3.8.0.
   --insecurehttps       Do not validate HTTPS certificates
   --username USERNAME   Username for HTTP auth
   --password PASSWORD   Password for HTTP auth
+  --version             Print version information and exit
 </pre>
 
 ## Source
