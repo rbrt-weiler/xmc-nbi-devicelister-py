@@ -1,0 +1,36 @@
+{
+    "name": "Python VS Code Remote Container",
+    "dockerFile": "Dockerfile",
+    "extensions": [
+        "davidanson.vscode-markdownlint",
+        "helixquar.asciidecorator",
+        "ms-python.python",
+        "ms-vscode.go",
+        "vscode-icons-team.vscode-icons"
+    ],
+    "settings": {
+        "asciidecorator.defaultFont": "Banner3",
+        "editor.cursorBlinking": "phase",
+        "editor.fontFamily": "Menlo, 'Liberation Mono', Consolas, 'Courier New', monospace",
+        "editor.insertSpaces": false,
+        "editor.wordWrap": "on",
+        "telemetry.enableTelemetry": false,
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "todohighlight.include": [
+            "**/*.js",
+            "**/*.jsx",
+            "**/*.ts",
+            "**/*.tsx",
+            "**/*.html",
+            "**/*.php",
+            "**/*.css",
+            "**/*.scss",
+            "**/*.go",
+            "**/*.rs",
+            "**/*.cs"
+        ],
+        "workbench.editor.highlightModifiedTabs": true,
+        "workbench.iconTheme": "vscode-icons"
+    },
+	"postCreateCommand": "/bin/bash ./.devcontainer/postcreate.sh"
+}
