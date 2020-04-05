@@ -2,10 +2,10 @@
 
 DeviceLister uses the GraphQL-based API provided by the Northbound Interface (NBI) of [Extreme Management Center (XMC)](https://www.extremenetworks.com/product/extreme-management-center/) to fetch and display a list of all devices. The list includes the following pieces of information for each device:
 
-  * up/down (as +/- and text)
-  * IP address
-  * vendor and model
-  * system name or nick name
+* up/down (as +/- and text)
+* IP address
+* vendor and model
+* system name or nick name
 
 The tool is intended to provide a quick overview of the managed devices and to serve as a starting point for other tools.
 
@@ -13,8 +13,8 @@ The tool is intended to provide a quick overview of the managed devices and to s
 
 This project uses two defined branches:
 
-  * `master` is the primary development branch. Code within `master` may be broken at any time.
-  * `stable` is reserved for code that interprets without errors and is tested. Track `stable` if you just want to use the software.
+* `master` is the primary development branch. Code within `master` may be broken at any time.
+* `stable` is reserved for code that interprets without errors and is tested. Track `stable` if you just want to use the software.
 
 Other branches, for example for developing specific features, may be created and deleted at any time.
 
@@ -30,7 +30,7 @@ Tested with Python 3.7.{3,4} and 3.8.0.
 
 `DeviceLister.py -h`:
 
-<pre>
+```text
   -h, --help            show this help message and exit
   --host HOST           XMC Hostname / IP
   --httptimeout HTTPTIMEOUT
@@ -39,7 +39,7 @@ Tested with Python 3.7.{3,4} and 3.8.0.
   --username USERNAME   Username for HTTP auth
   --password PASSWORD   Password for HTTP auth
   --version             Print version information and exit
-</pre>
+```
 
 ## Source
 
