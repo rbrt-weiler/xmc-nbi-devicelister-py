@@ -9,6 +9,8 @@ DeviceLister uses the GraphQL-based API provided by the Northbound Interface (NB
 
 The tool is intended to provide a quick overview of the managed devices and to serve as a starting point for other tools.
 
+**Notice**: This project has surfaced as a proof of concept and is _not maintained_ anymore. If you need a production ready NBI client, please refer to [the Go version of DevideLister](https://gitlab.com/rbrt-weiler/xmc-nbi-devicelister-go).
+
 ## Branches
 
 This project uses two defined branches:
